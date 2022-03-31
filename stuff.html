@@ -36,11 +36,11 @@
     <div class="container">
 
         <div class="section" id="budgetLeft">
-            <h4>Budget:</h4>
+            <h4>Budget</h4>
             <table>
                 <thead>
                     <tr>
-                        <th>Monthly Budget</th>
+                        <th>Budget</th>
                         <th>Total Spent</th>
                         <th>Budget Left</th>
                     </tr>
@@ -56,9 +56,22 @@
             </table>
         </div>
 
+        <div class="section" id="budgetManage">
+            <h4>Manage Budget</h4>
+            <form>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <label for="quantity">New Budget</label>
+                        <input type="number" name="quantity" required>
+                    </div>
+                </div>
+                <button class="btn waves-effect waves-light" type="submit"><i
+                        class="material-icons right">send</i>Change that budget!</button>
+            </form>
+        </div>
 
         <div class="section" id="stuffList">
-            <h4>Purchases Made:</h4>
+            <h4>Purchases Made</h4>
             <table>
                 <thead>
 
@@ -103,23 +116,23 @@
         </div>
 
         <div class="section" id="stuffAdd">
-            <h4>Document Purchases:</h4>
+            <h4>Document Purchases</h4>
             <form>
                 <div class="row">
                     <div class="input-field col s6">
-                        <label for="name">Item Name:</label>
+                        <label for="name">Item Name</label>
                         <input type="text" name="name" data-length="32" required>
                     </div>
                     <div class="input-field col s6">
-                        <label for="quantity">Item Amount:</label>
+                        <label for="quantity">Item Amount</label>
                         <input type="number" name="quantity" required>
                     </div>
                     <div class="input-field col s6">
-                        <label for="quantity">Item Price:</label>
+                        <label for="quantity">Item Price</label>
                         <input type="number" name="quantity" required>
                     </div>
                     <div class="input-field col s6">
-                        <label for="quantity">Reason for Buying:</label>
+                        <label for="quantity">Reason for Buying</label>
                         <input type="text" name="name" data-length="100" required>
                     </div>
                 </div>
