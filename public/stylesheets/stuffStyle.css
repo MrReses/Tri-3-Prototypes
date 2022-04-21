@@ -1,0 +1,13 @@
+form {
+    border: solid 2px darkgreen;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+form:focus-within {
+    border-color: darkgreen;
+}
+
+tr:hover {
+    background-color: lightgreen;
+}
