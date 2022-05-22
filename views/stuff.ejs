@@ -21,6 +21,7 @@
     <!-- Actual page content! -->
     <div class="container">
 
+        <%# Might work on budget code later
         <div class="section" id="budgetLeft">
             <h4>Budget</h4>
             <table>
@@ -56,6 +57,8 @@
             </form>
         </div>
 
+        %>
+
         <div class="section" id="stuffList">
             <h4>Purchases Made</h4>
             <table>
@@ -71,55 +74,49 @@
                 </thead>
                 <tbody>
 
-                    <tr>
-                        <td>Maraschino Cherries</td>
-                        <td>50</td>
-                        <td>$26.00</td>
-                        <td>$1300</td>
-                        <td>
-                            <a class="btn-small waves-effect waves-light" href="/stuff/item"><i
-                                    class="material-icons right">edit</i>Info/Edit</a>
-                            <a class="btn-small waves-effect waves-light blue"><i
-                                    class="material-icons right">delete</i>Delete</a>
-                        </td>
-                    </tr>
+                    <% for(let i = 0; i < inventory.length; i++){ %>
+
 
                     <tr>
-                        <td>Plane ticket to Disneyland</td>
-                        <td>1</td>
-                        <td>$200</td>
-                        <td>$200</td>
+                        <td><%= inventory[i].item %></td>
+                        <td><%= inventory[i].amount %></td>
+                        <td><%= inventory[i].price %></td>
+                        <td><%= "$" + inventory[i].amount * inventory[i].price %></td>
                         <td>
-                            <a class="btn-small waves-effect waves-light" href="/stuff/item"><i
-                                    class="material-icons right">edit</i>Info/Edit</a>
-                            <a class="btn-small waves-effect waves-light blue"><i
-                                    class="material-icons right">delete</i>Delete</a>
+                            <a class="btn-small waves-effect waves-light" href="/stuff/item/<%= inventory[i].id %>" >
+                                <i class="material-icons right">edit</i>
+                                    Info/Edit
+                            </a>
+                            <a class="btn-small waves-effect waves-light blue" href="/stuff/item/<%= inventory[i].id %>/delete">
+                            <i class="material-icons right">delete</i>
+                                    Delete
+                            </a>
                         </td>
                     </tr>
-                
+                    <% } %>
                 </tbody>
             </table>
         </div>
 
         <div class="section" id="stuffAdd">
             <h4>Document Purchases</h4>
-            <form>
+            <form method="post" action="/stuff">
                 <div class="row">
                     <div class="input-field col s6">
                         <label for="name">Item Name</label>
-                        <input type="text" name="name" data-length="32" required>
+                        <input type="text" name="name" id="nameInput" data-length="32" required>
                     </div>
                     <div class="input-field col s6">
                         <label for="quantity">Item Amount</label>
-                        <input type="number" name="quantity" required>
+                        <input type="number" name="quantity1" id="quantity1Input" required>
                     </div>
                     <div class="input-field col s6">
                         <label for="quantity">Item Price</label>
-                        <input type="number" name="quantity" required>
+                        <input type="number" name="quantity2" id="quantity2Input" required>
                     </div>
                     <div class="input-field col s6">
                         <label for="quantity">Reason for Buying</label>
-                        <input type="text" name="name" data-length="100" required>
+                        <input type="text" name="description" id="descriptionInput" data-length="100" required>
                     </div>
                 </div>
                 <button class="btn waves-effect waves-light" type="submit"><i

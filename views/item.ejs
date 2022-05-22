@@ -21,29 +21,31 @@
     <!-- Actual page content! -->
     <div class="container">
         <div class="section flow-text" id="stuffDetail">
+            <a class="btn-large waves-effect waves-light" href="/stuff">
+                <i class="material-icons left">arrow_back</i>See all of your purchases!</a>
             <h3>Purchase details:</h3>
             <table>
                 <tr>
                     <th>Item:</th>
-                    <td>Maraschino Cherries</td>
+                    <td><%= item %></td>
                 </tr>
                 <tr>
                     <th>Amount:</th>
-                    <td>50</td>
+                    <td><%= amount %></td>
                 </tr>
                 <tr>
                     <th>Price:</th>
-                    <td>$26</td>
+                    <td><%= price %></td>
 
                 </tr>
                 <tr>
                     <th>Total Price:</th>
-                    <td>$1300</td>
+                    <td><%= "$" + amount * price %></td>
                 </tr>
                 <tr>
                     <th>Reason for Purchase:</th>
                     <td>
-                        Trust me, I'm not addicted...
+                        <%= reason_for_buying %>
                     </td>
                 </tr>
             </table>
@@ -53,7 +55,7 @@
             <a class="btn-large waves-effect waves-light left modal-trigger" href="#stuffEdit">
                 <i class="material-icons right">edit</i>Edit
             </a>
-            <a class="btn-large waves-effect waves-light blue right">
+            <a class="btn-large waves-effect waves-light blue right" href="/stuff/item/<%= id %>/delete">
                 <i class="material-icons right">delete</i>Delete
             </a>
         </div>
@@ -64,30 +66,30 @@
             <div class="modal-content">
 
                 <h3>Edit item:</h3>
-                <form>
+                <form method="post" action="/stuff/item/<%= id%>">
                     <div class="row">
                         <div class="input-field col s6">
                             <label for="name">Item Name:</label>
-                            <input type="text" name="name" data-length="32" value="Maraschino Cherries" required>
+                            <input type="text" name="name" id="nameInput" data-length="32" value="<%= item%>" required>
                         </div>
                         <div class="input-field col s6">
                             <label for="quantity">Item Amount:</label>
-                            <input type="number" name="quantity" value=50 required>
+                            <input type="number" name="quantity1" id="quantity1Input" value=<%= amount%> required>
                         </div>
                         <div class="input-field col s6">
                             <label for="quantity">Item Price:</label>
-                            <input type="number" name="quantity" value=26 required>
+                            <input type="number" name="quantity2" id="quantity2Input" value=<%= price%> required>
                         </div>
                         <div class="input-field col s6">
                             <label for="description">Reason for Purchase:</label>
-                            <input type="text" name="description" value="Trust me, I'm not addicted..." data-length="100" required>
+                            <input type="text" name="description" id="descriptionInput" value="<%= reason_for_buying%>" data-length="100" required>
                         </div>
                     </div>
                     <div class="modal-footer" style="background-color: rgb(200, 250, 200)">
                         <button class="btn waves-effect waves-light " type="submit"><i
                                 class="material-icons right">send</i>Submit</button>
 
-                        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Nevermind</a>
+                        <a href="#!" class="modal-close waves-effect waves-light blue btn">Nevermind</a>
                     </div>
                 </form>
             </div>

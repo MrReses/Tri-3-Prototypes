@@ -47,8 +47,9 @@ db.execute(read_purchases_table_sql,
     }
 );
 
-// now for budget table
+// now for budget table, might do this later
 
+/*
 // delete any table that already exists
 const drop_budget_table_sql = "DROP TABLE IF EXISTS `budget`;"
 
@@ -75,7 +76,11 @@ const insert_budget_table_sql = `
 
 db.execute(insert_budget_table_sql, ["2000.00"]);
 
+*/
+
 /**** Read the sample items inserted ****/
+
+/*
 
 const read_budget_table_sql = "SELECT * FROM budget";
 
@@ -88,6 +93,8 @@ db.execute(read_budget_table_sql,
         console.log(results);
     }
 );
+
+*/
 
 db.end();
 
