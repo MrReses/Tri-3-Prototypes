@@ -6,7 +6,7 @@ const logger = require( "morgan" );
 const app = express();
 const port = 8080; //80 used for official websites, can be range 1024 to about
 
-const db = require('./db/db_connection');
+const db = require('./db/db_pool');
 
 //Configure express to use ejs
 app.set("views", __dirname + "/views");
