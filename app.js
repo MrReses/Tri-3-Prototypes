@@ -4,7 +4,10 @@ const res = require("express/lib/response");
 const logger = require( "morgan" );
 //const { process_params } = require("express/lib/router");
 const app = express();
-const port = 8080; //80 used for official websites, can be range 1024 to about
+
+const dotenv = require('dotenv');
+dotenv.config();
+const port = process.env.PORT; //80 used for official websites, can be range 1024 to about
 
 const db = require('./db/db_pool');
 
