@@ -15,6 +15,21 @@ const db = require('./db/db_pool');
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
+//Auth0
+const { auth } = require('express-openid-connect');
+
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  secret: '7yxwjLAnGlyAkcF_sR5lpdnPokeCeNFS-LLOVv5XKmUp9Uazk-P5vkheHqKFrh9R',
+  baseURL: 'http://localhost:80',
+  clientID: 'xa9pNicuOwgroUhGiGyGDj8t8vrWKNR4',
+  issuerBaseURL: 'https://dev-f3ayu9wz.us.auth0.com'
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
 app.use( express.urlencoded({extended : false}));
 
 // all event handlers go from top to bottom
@@ -25,6 +40,17 @@ app.use(logger("dev"));
 // define middleware that serves static resources in the public directory
 app.use(express.static(__dirname + '/public'));
 
+// req.isAuthenticated is provided from the auth router
+app.get('/testLogin', (req, res) => {
+    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
+  });
+
+  const { requiresAuth } = require('express-openid-connect');
+
+  app.get('/profile', requiresAuth(), (req, res) => {
+    res.send(JSON.stringify(req.oidc.user));
+  });  
+  
 // define a route for the default home page
 app.get( "/", ( req, res ) => {
     res.render('index');
