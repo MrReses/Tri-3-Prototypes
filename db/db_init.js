@@ -11,6 +11,7 @@ db.execute(drop_purchases_table_sql);
 const create_purchases_table_sql = `
 
 CREATE TABLE purchases (
+    email VARCHAR(45) NULL,
     id INT NOT NULL AUTO_INCREMENT,
     item VARCHAR(45) NOT NULL,
     amount INT NOT NULL,

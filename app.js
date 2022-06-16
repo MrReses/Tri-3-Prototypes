@@ -21,10 +21,10 @@ const { auth } = require('express-openid-connect');
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: '7yxwjLAnGlyAkcF_sR5lpdnPokeCeNFS-LLOVv5XKmUp9Uazk-P5vkheHqKFrh9R',
-  baseURL: 'http://localhost:80',
-  clientID: 'xa9pNicuOwgroUhGiGyGDj8t8vrWKNR4',
-  issuerBaseURL: 'https://dev-f3ayu9wz.us.auth0.com'
+  secret: process.env.AUTH0_SECRET,
+  baseURL: process.env.AUTH0_BASE_URL,
+  clientID: process.env.AUTH0_CLIENT_ID,
+  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL
 };
 
 // auth router attaches /login, /logout, and /callback routes to the baseURL
@@ -61,16 +61,18 @@ const read_stuff_all_sql = `
         id, item, amount, price
     FROM
         purchases
+    WHERE
+        email = ?
 `
 
 // define a route for the stuff inventory page
-app.get( "/stuff", ( req, res ) => {
+app.get( "/stuff", requiresAuth(), ( req, res ) => {
     //res.sendFile( __dirname + "/views/stuff.html" );
-    db.execute(read_stuff_all_sql, (error, results) => {
+    db.execute(read_stuff_all_sql, [req.oidc.user.email], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server Error
         else
-            res.render("stuff", { inventory : results});
+            res.render("stuff", { inventory : results, username : req.oidc.user.name});
         // inventory's shape:
         // {
         //  {id: ___, item: ____, quantity: ____, price: ____},
@@ -86,12 +88,13 @@ const read_stuff_item_sql = `
         purchases
     WHERE
         id = ?
+        AND email = ?
 `
 
 // define a route for the item detail page
-app.get( "/stuff/item/:id", ( req, res ) => {
+app.get( "/stuff/item/:id", requiresAuth(), ( req, res ) => {
     //res.sendFile( __dirname + "/views/item.html" );
-    db.execute(read_stuff_item_sql, [req.params.id], (error, results) => {
+    db.execute(read_stuff_item_sql, [req.params.id, req.oidc.user.email], (error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server 
         else if (results.length == 0)
@@ -111,10 +114,11 @@ const delete_stuff_sql = `
         purchases
     WHERE
         id = ?
+        AND email = ?
 `
 
-app.get("/stuff/item/:id/delete", ( req, res) => {
-    db.execute(delete_stuff_sql, [req.params.id], ( error, results) => {
+app.get("/stuff/item/:id/delete", requiresAuth(), ( req, res) => {
+    db.execute(delete_stuff_sql, [req.params.id, req.oidc.user.email], ( error, results) => {
         if (error)
             res.status(500).send(error); //Internal Server
         else {
@@ -125,17 +129,17 @@ app.get("/stuff/item/:id/delete", ( req, res) => {
 
 const create_item_sql = `
     INSERT INTO purchases
-        (item, amount, price, reason_for_buying)
+        (item, amount, price, reason_for_buying, email)
     VALUES
-        (?, ?, ?, ?)
+        (?, ?, ?, ?, ?)
 `
 
-app.post("/stuff", ( req, res ) => {
+app.post("/stuff", requiresAuth(), ( req, res ) => {
     // to get form input values
     // req.body.name
     // req.body.quantity
     // quantity, description
-    db.execute(create_item_sql, [req.body.name, req.body.quantity1, req.body.quantity2, req.body.description], (error, results) => {
+    db.execute(create_item_sql, [req.body.name, req.body.quantity1, req.body.quantity2, req.body.description, req.oidc.user.email], (error, results) => {
         if(error)
             res.status(500).send(error);
         else {
@@ -154,10 +158,11 @@ const update_item_sql = `
         reason_for_buying = ?
     WHERE
         id = ?
+        AND email = ?
 `
 
-app.post("/stuff/item/:id", ( req,res ) => {
-    db.execute(update_item_sql,[req.body.name, req.body.quantity1, req.body.quantity2, req.body.description, req.params.id], (error, results) => {
+app.post("/stuff/item/:id", requiresAuth(), ( req,res ) => {
+    db.execute(update_item_sql,[req.body.name, req.body.quantity1, req.body.quantity2, req.body.description, req.params.id, req.oidc.user.email], (error, results) => {
         if(error)
             res.status(500).send(error);
         else {
